@@ -103,7 +103,7 @@ describe('Integration tests', function() {
             .send({value: 42})
             .expect('Content-Type', /application\/json/)
             .expect(201)
-            .expect(/{"id":1,"userId":1,"createDate":"(.*)","value":42}/, done);
+            .expect(/{"id":1,"userId":1,"createDate":"(.*)","value":"42.00"}/, done);
     });
 
     it('should load the list of transactions', function(done) {
@@ -128,7 +128,7 @@ describe('Integration tests', function() {
             .send({value: 23})
             .expect('Content-Type', /application\/json/)
             .expect(201)
-            .expect(/{"id":2,"userId":1,"createDate":"(.*)","value":23}/, done);
+            .expect(/{"id":2,"userId":1,"createDate":"(.*)","value":"23.00"}/, done);
     });
 
     it('should return the complete list of transactions', function(done) {

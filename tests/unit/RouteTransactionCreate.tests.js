@@ -84,7 +84,7 @@ describe('transactionCreateRoute', function () {
         it('should call creatTransaction with the correct parameters', function () {
             expect(userLoader.createTransaction.callCount).to.equal(1);
             expect(userLoader.createTransaction.args[0][0]).to.equal(100);
-            expect(userLoader.createTransaction.args[0][1]).to.equal(42);
+            expect(userLoader.createTransaction.args[0][1]).to.equal("42.00");
         });
     });
 
@@ -120,20 +120,20 @@ describe('transactionCreateRoute', function () {
         it('should call createUser', function () {
             expect(userLoader.createTransaction.callCount).to.equal(1);
             expect(userLoader.createTransaction.args[0][0]).to.equal(1000);
-            expect(userLoader.createTransaction.args[0][1]).to.equal(1337);
+            expect(userLoader.createTransaction.args[0][1]).to.equal("1337.00");
         });
 
         it('should reload the user', function () {
             expect(userLoader.loadTransaction.callCount).to.equal(1);
-            expect(userLoader.loadTransaction.args[0][0]).to.equal(1337);
+            expect(userLoader.loadTransaction.args[0][0]).to.equal(1337.00);
         });
     });
 
     describe('success', function () {
         var userLoader = mocks.createUserPersistenceMock({
             loadUserById: { error: null, result: {name: 'bert'} },
-            createTransaction: {error: null, result: 1337},
-            loadTransaction: {error: null, result: {value: 123}}
+            createTransaction: {error: null, result: "1337.00"},
+            loadTransaction: {error: null, result: {value: "123.00"}}
         });
 
         var mqttWrapper = mocks.createMqttWrapperMock();
@@ -152,7 +152,7 @@ describe('transactionCreateRoute', function () {
         });
 
         it('should send a body', function () {
-            expect(result.content()).to.deep.equal({value: 123});
+            expect(result.content()).to.deep.equal({value: "123.00"});
         });
 
         it('should set the correct content type', function () {
@@ -166,17 +166,17 @@ describe('transactionCreateRoute', function () {
         it('should call createTransaction', function () {
             expect(userLoader.createTransaction.callCount).to.equal(1);
             expect(userLoader.createTransaction.args[0][0]).to.equal(100);
-            expect(userLoader.createTransaction.args[0][1]).to.equal(42.1);
+            expect(userLoader.createTransaction.args[0][1]).to.equal("42.10");
         });
 
         it('should reload the transaction', function () {
             expect(userLoader.loadTransaction.callCount).to.equal(1);
-            expect(userLoader.loadTransaction.args[0][0]).to.equal(1337);
+            expect(userLoader.loadTransaction.args[0][0]).to.equal("1337.00");
         });
 
         it('should send an transaction value through mqtt', function () {
             expect(mqttWrapper.publishTransactionValue.callCount).to.equal(1);
-            expect(mqttWrapper.publishTransactionValue.args[0][0]).to.equal(42.1);
+            expect(mqttWrapper.publishTransactionValue.args[0][0]).to.equal("42.10");
         })
     });
 });
